@@ -1,39 +1,30 @@
+
 #!/usr/bin/python3
-'''gather information from the an api'''
+"""
+Module 0-gather_data_from_an_API
+"""
+if __name__ == "__main__":
+    import requests
+    import sys
 
-import requests
-import sys
+    user_id = sys.argv[1]
+    url_employee = "https://jsonplaceholder.typicode.com/users/{}"\
+        .format(user_id)
+    url_todo = "https://jsonplaceholder.typicode.com/todos?userId={}"\
+        .format(user_id)
+    req_employee = requests.get(url_employee)
+    EN = req_employee.json().get('name')
+    req_todo = requests.get(url_todo)
+    TOTAL_T = len(req_todo.json())
+    TASKS = 0
+    NUMT = 0
+    lists = []
+    while TASKS < TOTAL_T:
+        if req_todo.json()[TASKS].get('completed') is True:
+            lists.append(req_todo.json()[TASKS].get('title'))
+            NUMT += 1
+        TASKS += 1
 
-
-def api_get_name():
-    """function to make the format and print the info"""
-
-    EMPLOYEE_NAME = ""
-    id_user = int(sys.argv[1])
-    users = "https://jsonplaceholder.typicode.com/users?id="
-    todos = "https://jsonplaceholder.typicode.com/todos?userId="
-    response = requests.get(users+sys.argv[1]).json()
-    for i in response:
-        if i["id"] == id_user:
-            EMPLOYEE_NAME = i['name']
-    TASK_TITLE = []
-
-    response1 = requests.get(todos+sys.argv[1]).json()
-    NUMBER_OF_DONE_TASKS = 0
-    TOTAL_NUMBER_OF_TASKS = 0
-    for elem in response1:
-        if elem["userId"] == id_user:
-            TOTAL_NUMBER_OF_TASKS += 1
-            if elem["completed"]:
-                NUMBER_OF_DONE_TASKS += 1
-                TASK_TITLE.append(elem['title'])
-
-    print(
-        'Employee {} is done with tasks({}/{}):'
-        .format(EMPLOYEE_NAME, NUMBER_OF_DONE_TASKS, TOTAL_NUMBER_OF_TASKS))
-    for i in TASK_TITLE:
-        print('\t {}'.format(i))
-
-
-if __name__ == '__main__':
-    api_get_name()
+    print("Employee {} is done with tasks({}/{}):".format(EN, NUMT, TOTAL_T))
+    for t in lists:
+        print("\t {}".format(t))
