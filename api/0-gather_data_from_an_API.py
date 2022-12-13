@@ -1,39 +1,38 @@
 #!/usr/bin/python3
-'''gather information from the an api'''
-
+"""
+This module containts an api request
+"""
 import requests
 import sys
 
 
-def api_get_name():
-    """function to make the format and print the info"""
+def gather_data_from_api():
+    """
+        This function gather data from an api
+    """
 
-    EMPLOYEE_NAME = ""
-    id_user = int(sys.argv[1])
-    users = "https://jsonplaceholder.typicode.com/users"
-    todos = "https://jsonplaceholder.typicode.com/todos"
-    response = requests.get(users).json()
-    for i in response:
-        if i["id"] == id_user:
-            EMPLOYEE_NAME = i['name']
-    TASK_TITLE = []
+    url_todo = 'https://jsonplaceholder.typicode.com/todos?userId='
+    url_name = 'https://jsonplaceholder.typicode.com/users?id='
+    response_todo = requests.get(url_todo + sys.argv[1])
+    response_name = requests.get(url_name + sys.argv[1])
 
-    response1 = requests.get(todos).json()
-    NUMBER_OF_DONE_TASKS = 0
-    TOTAL_NUMBER_OF_TASKS = 0
-    for elem in response1:
-        if elem["userId"] == id_user:
-            TOTAL_NUMBER_OF_TASKS += 1
-            if elem["completed"]:
-                NUMBER_OF_DONE_TASKS += 1
-                TASK_TITLE.append(elem['title'])
+    content_todo = list(response_todo.json())
+    content_name = list(response_name.json())
 
-    print(
-        'Employee {} is done with tasks({}/{}):'
-        .format(EMPLOYEE_NAME, NUMBER_OF_DONE_TASKS, TOTAL_NUMBER_OF_TASKS))
-    for i in TASK_TITLE:
-        print('\t {}'.format(i))
+    task_completed = 0
+    total_tasks = 0
+    completed_tasks = []
+    for elem in content_todo:
+        if elem['completed']:
+            task_completed += 1
+            completed_tasks.append(elem['title'])
+        total_tasks += 1
+
+    print("Employee {} is done with tasks({}/{}):".format(
+        content_name[0]['name'], task_completed, total_tasks))
+    for elem in completed_tasks:
+        print('\t ' + elem)
 
 
-if __name__ == '__main__':
-    api_get_name()
+if __name__ == "__main__":
+    gather_data_from_api()
