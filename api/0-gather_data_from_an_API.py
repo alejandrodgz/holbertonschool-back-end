@@ -8,22 +8,27 @@ import sys
 def api_get_name():
     """function to make the format and print the info"""
 
+    EMPLOYEE_NAME = ""
     id_user = int(sys.argv[1])
-    users = "https://jsonplaceholder.typicode.com/users/"
-    url = "{}{}".format(users, id_user)
+    users = "https://jsonplaceholder.typicode.com/users"
+    todos = "https://jsonplaceholder.typicode.com/todos"
+    url = "{}".format(users)
     response = requests.get(url).json()
-    EMPLOYEE_NAME = response['name']
+    for i in response:
+        if i["id"] == id_user:
+            EMPLOYEE_NAME = i['name']
     TASK_TITLE = []
 
-    url1 = "{}{}/todos".format(users, id_user)
+    url1 = "{}".format(todos)
     response1 = requests.get(url1).json()
     NUMBER_OF_DONE_TASKS = 0
     TOTAL_NUMBER_OF_TASKS = 0
     for elem in response1:
-        TOTAL_NUMBER_OF_TASKS += 1
-        if elem["completed"]:
-            NUMBER_OF_DONE_TASKS += 1
-            TASK_TITLE.append(elem['title'])
+        if elem["userId"] == id_user:
+            TOTAL_NUMBER_OF_TASKS += 1
+            if elem["completed"]:
+                NUMBER_OF_DONE_TASKS += 1
+                TASK_TITLE.append(elem['title'])
 
     print(
         'Employee {} is done with tasks({}/{}):'
