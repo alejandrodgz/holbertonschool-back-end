@@ -10,15 +10,15 @@ def api_get_name():
 
     EMPLOYEE_NAME = ""
     id_user = int(sys.argv[1])
-    users = "https://jsonplaceholder.typicode.com/users?id="
-    todos = "https://jsonplaceholder.typicode.com/todos?userId="
-    response = requests.get(users+sys.argv[1]).json()
+    users = "https://jsonplaceholder.typicode.com/users"
+    todos = "https://jsonplaceholder.typicode.com/todos"
+    response = requests.get(users).json()
     for i in response:
         if i["id"] == id_user:
             EMPLOYEE_NAME = i['name']
     TASK_TITLE = []
 
-    response1 = requests.get(todos+sys.argv[1]).json()
+    response1 = requests.get(todos).json()
     NUMBER_OF_DONE_TASKS = 0
     TOTAL_NUMBER_OF_TASKS = 0
     for elem in response1:
