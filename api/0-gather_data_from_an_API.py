@@ -14,24 +14,27 @@ def api_get_name():
     url = "{}{}".format(users, id_user)
     response = requests.get(url)
     get1 = response.content
-    dict_get = json.loads(get1)
+    EMPLOYEE_NAME = json.loads(get1)['name']
+    TASK_TITLE =[]
+
 
     url1 = "{}{}/todos".format(users, id_user)
     response = requests.get(url1)
     dict_get1 = response.json()
-    num_of_task = 0
-    tasks = 0
-    for i in dict_get1:
-        tasks += 1
-        if i["completed"]:
-            num_of_task += 1
+    NUMBER_OF_DONE_TASKS = 0
+    TOTAL_NUMBER_OF_TASKS = 0
+    for elem in dict_get1:
+        TOTAL_NUMBER_OF_TASKS += 1
+        if elem["completed"]:
+            NUMBER_OF_DONE_TASKS += 1
+            TASK_TITLE.append(elem['title'])
+
 
     print(
         "Employee {} is done with tasks({}/{}):"
-        .format(dict_get['name'], num_of_task, tasks))
-    for i in dict_get1:
-        if i["completed"]:
-            print("     {}".format(i['title']))
+        .format(EMPLOYEE_NAME, NUMBER_OF_DONE_TASKS, TOTAL_NUMBER_OF_TASKS))
+    for i in TASK_TITLE:
+        print("\t {}".format(i))
 
 
 if __name__ == '__main__':
