@@ -10,12 +10,13 @@ def api_get_name():
     """function to make the format and print the info"""
 
     id_user = sys.argv[1]
-    url = f"https://jsonplaceholder.typicode.com/users/{id_user}"
+    users = "https://jsonplaceholder.typicode.com/users/"
+    url = "{}{}".format(users, id_user)
     response = requests.get(url)
     get1 = response.content
     dict_get = json.loads(get1)
 
-    url1 = f"https://jsonplaceholder.typicode.com/users/{id_user}/todos"
+    url1 = "{}{}/todos".format(users, id_user)
     response = requests.get(url1)
     dict_get1 = response.json()
     num_of_task = 0
@@ -26,10 +27,11 @@ def api_get_name():
             num_of_task += 1
 
     print(
-        f"Employee {dict_get['name']} is done with tasks({num_of_task}/{tasks}):")
+        "Employee {} is done with tasks({}/{}):"
+        .format(dict_get['name'], num_of_task, tasks))
     for i in dict_get1:
         if i["completed"]:
-            print(f"     {i['title']}")
+            print("     {}".format(i['title']))
 
 
 if __name__ == '__main__':
