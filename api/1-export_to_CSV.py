@@ -22,12 +22,12 @@ def api_get_name():
     TASK_CSV = []
     response1 = requests.get(todos).json()
     for j in response1:
-        listing = [str(j["userId"]), EMPLOYEE_NAME, j["completed"], j['title']]
+        listing = [j["userId"], EMPLOYEE_NAME, j["completed"], j['title']]
         TASK_CSV.append(listing)
     
     namefile = "{}.csv".format(id_user)
     with open(namefile, "w", newline='') as f:
-        writer = csv.writer(f)
+        writer = csv.writer(f, quoting=csv.QUOTE_ALL)
         writer.writerows(TASK_CSV)
 
 
