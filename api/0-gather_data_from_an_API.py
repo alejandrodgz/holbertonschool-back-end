@@ -26,10 +26,10 @@ def api_get_name():
             TASK_TITLE.append(elem['title'])
 
     print(
-        "Employee {} is done with tasks({}/{}):"
+        'Employee {} is done with tasks({}/{}):'
         .format(EMPLOYEE_NAME, NUMBER_OF_DONE_TASKS, TOTAL_NUMBER_OF_TASKS))
     for i in TASK_TITLE:
-        print("\t {}".format(i))
+        print('\t {}'.format(i))
 
 
 if __name__ == '__main__':
