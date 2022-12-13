@@ -12,7 +12,8 @@ def api_get_name():
     EMPLOYEE_NAME = ""
     id_user = int(sys.argv[1])
     users = "https://jsonplaceholder.typicode.com/users"
-    todos = "https://jsonplaceholder.typicode.com/users/{}/todos".format(id_user)
+    todos = "https://jsonplaceholder.typicode.com/users/{}/todos".format(
+        id_user)
     response = requests.get(users).json()
 
     for i in response:
@@ -24,7 +25,7 @@ def api_get_name():
     for j in response1:
         listing = [j["userId"], EMPLOYEE_NAME, j["completed"], j['title']]
         TASK_CSV.append(listing)
-    
+
     namefile = "{}.csv".format(id_user)
     with open(namefile, "w", newline='') as f:
         writer = csv.writer(f, quoting=csv.QUOTE_ALL)
